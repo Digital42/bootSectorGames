@@ -56,8 +56,19 @@ game_loop:
 	jmp continue
 
 w_press:
-	mov byte [color], 0F0h
+	;mov byte [color], 0F0h
+	mov ax, 0013h
+	int 10h
+		
+	push 0A000h
+	pop es
+	
+	mov al, 04h
+	mov cx, 320*200
+	xor di, di
+	rep stosb
 
+	jmp continue
 
 ;; continue?
 continue:
@@ -65,11 +76,11 @@ continue:
 	
 ;; cpu input
 	;; delay timer
-	mov bx, [046Ch]
-	inc bx
-	inc bx
+	mov ax, [046Ch]
+	inc ax
+	;inc bx
 	.delay:
-		cmp [046Ch], bx
+		cmp [046Ch], ax
 		jl .delay
 
 jmp game_loop 
